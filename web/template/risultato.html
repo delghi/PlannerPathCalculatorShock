@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Starter Template - Materialize</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="template/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="template/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">ShockGroup</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="creazioneAlbero">Home</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">PLANNER PATH CALCULATOR</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">PLANNER PATH CALCULATOR</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">The Planner Path Calculator is a sub-system of the Global Planning System</h5>
+      </div>
+      <!-- <div class="row center">
+        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Crea albero</a>
+      </div> -->
+      <br><br>
+       <div class="row center">
+        <h5 class="header col s12 light">Risultato calcolo: </h5>
+
+      </div>
+       <table class="centered">
+        <thead>
+          <tr>
+              <th data-field="id">Attributo</th>
+              <th data-field="name">Totale</th>
+              
+          </tr>
+        </thead>
+        <tbody>
+           <#list result?keys as key> 
+          <tr>
+            <td>${key}</td>
+            <td>${result[key]}</td>
+          </tr>
+           </#list>
+          <tr>
+            <td>Vertici attraversati: </td>
+            <td>
+                <#list vertici as vertice>
+                ${vertice}
+                </#list>
+            </td>
+          </tr>
+          
+           <tr>
+            <td>Tempo calcolo(nanosec)</td>
+            <td>${tempo}</td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+
+
+
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="template/js/materialize.js"></script>
+  <script src="template/js/init.js"></script>
+
+  </body>
+</html>

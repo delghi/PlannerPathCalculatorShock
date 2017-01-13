@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Planner Path Calculator - Creazione albero</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="template/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="template/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">ShockGroup</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="creazioneAlbero">Home</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">PLANNER PATH CALCULATOR</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">PLANNER PATH CALCULATOR</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">The Planner Path Calculator is a sub-system of the Global Planning System</h5>
+      </div>
+      
+      <br><br>
+
+
+<form class="col s12" method="POST">
+ <div class="row">
+        <div class="input-field col s12">
+          <input id="nome_albero" name="nome_albero" type="text" class="validate">
+          <label for="nome_albero">Nome Albero</label>
+        </div>
+</div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="split_size" name="split_size" type="text" class="validate">
+          <label for="split_size">Split-Size</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="depth" name="depth" type="text" class="validate">
+          <label for="depth">Depth</label>
+        </div>
+      </div>
+
+      <div class="row">
+       <div class="input-field col s6">
+          <input id="attr1" name="attr1" type="text" class="validate">
+          <label for="attr1">Attributo Vertice Numero 1</label>
+        </div>
+         <div class="input-field col s6">
+          <input id="attr2" name="attr2" type="text" class="validate">
+          <label for="attr2">Attributo Vertice Numero 2</label>
+        </div>
+ </div>
+ <div class="row">
+       <div class="input-field col s6">
+          <input id="attr3" name="attr3" type="text" class="validate">
+          <label for="attr3">Attributo Vertice Numero 3</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="attr4" name="attr4" type="text" class="validate">
+          <label for="attr4">Attributo Vertice Numero 4</label>
+        </div>
+ </div>
+ <div class="row">
+       <div class="input-field col s6">
+          <input id="attrEdge1" name="attrEdge1" type="text" class="validate">
+          <label for="attrEdge1">Attributo Arco Numero 1</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="attrEdge2" name="attrEdge2" type="text" class="validate">
+          <label for="attrEdge2">Attributo Arco Numero 2</label>
+        </div>
+ </div>
+ <div class="row">
+       <div class="input-field col s6">
+          <input id="attrEdge3" name="attrEdge3" type="text" class="validate">
+          <label for="attrEdge3">Attributo Arco Numero 3</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="attrEdge4" name="attrEdge4" type="text" class="validate">
+          <label for="attrEdge4">Attributo Arco Numero 4</label>
+        </div>
+ </div>
+
+
+        <div class="row center">
+        <input type="submit"  class="btn-large waves-effect waves-light orange" value="Crea Albero"/> 
+        </div>
+</form>
+
+   
+ 
+
+
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="template/js/materialize.js"></script>
+  <script src="template/js/init.js"></script>
+
+  </body>
+</html>
