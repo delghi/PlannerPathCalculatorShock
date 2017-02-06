@@ -24,6 +24,7 @@ public class Albero {
     int numNodi;
     //test
     List attributi = new ArrayList();
+    int id;
     
 
     public Albero(String nome, int splitSize, int depth, List attrTemp) {
@@ -55,6 +56,11 @@ public class Albero {
         this.depth = depth;
         this.numNodi = getNumeroNodi(depth, splitSize); // 
         albero = new Vertice[numNodi];
+    }
+
+    public Albero(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
 
     

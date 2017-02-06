@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <listener>
+        <listener-class>
+            univaq.ppc.controller.Context_Init
+        </listener-class>
+    </listener>
+    <welcome-file-list>
+        <welcome-file>creazioneAlbero</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>CreazioneAlbero</servlet-name>
+        <servlet-class>univaq.ppc.controller.CreazioneAlbero</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EsecuzioneCalcolo</servlet-name>
+        <servlet-class>univaq.ppc.controller.EsecuzioneCalcolo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminazioneAlbero</servlet-name>
+        <servlet-class>univaq.ppc.controller.EliminazioneAlbero</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreazioneAlbero</servlet-name>
+        <url-pattern>/creazioneAlbero</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EsecuzioneCalcolo</servlet-name>
+        <url-pattern>/esecuzioneCalcolo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminazioneAlbero</servlet-name>
+        <url-pattern>/eliminazioneAlbero</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <resource-ref>
+        <res-ref-name>plannerpath</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+</web-app>

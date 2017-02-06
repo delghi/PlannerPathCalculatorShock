@@ -16,6 +16,10 @@
         <servlet-name>EsecuzioneCalcolo</servlet-name>
         <servlet-class>univaq.ppc.controller.EsecuzioneCalcolo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EliminazioneAlbero</servlet-name>
+        <servlet-class>univaq.ppc.controller.EliminazioneAlbero</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreazioneAlbero</servlet-name>
         <url-pattern>/creazioneAlbero</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>EsecuzioneCalcolo</servlet-name>
         <url-pattern>/esecuzioneCalcolo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminazioneAlbero</servlet-name>
+        <url-pattern>/eliminazioneAlbero</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

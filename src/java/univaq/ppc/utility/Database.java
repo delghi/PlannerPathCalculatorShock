@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Classe di utility che si occupa di selezionare/inserire/cancellare dati nel DB
+ * Contiente tutte le Query SQL utilizzate all'interno del progetto 
+ * N.B. per settare correttamente la connessione al DB occorre modificare la linea 42 
+ * inserire il path del DB al quale si desidera connettersi.
+ * 
+ * N.B.2. il funzionamento si basa anche sul corretto settaggio del file context.xml e web.xml 
+ * presenti rispettivamente in /Web Pages/META-INF/context.xml e /Web Pages/WEB-INF/web.xml
+ *
  */
 package univaq.ppc.utility;
 
@@ -34,7 +39,6 @@ public class Database {
      * Connessione al database
      * @throws Exception 
      */
- 
     
     	public static void connect() throws NamingException, SQLException {
         InitialContext ctx = new InitialContext();
@@ -67,12 +71,7 @@ public class Database {
     }
     
     
-      /**
-     * Select record con condizione
-     * @param table         tabella da cui prelevare i dati
-     * @param condition     condizione per il filtro dei dati
-     * @return              dati prelevati
-     * @throws java.sql.SQLException    
+   
     
       /**
      * Select record con condizione
@@ -148,12 +147,6 @@ public class Database {
         return Database.executeQuery(query);
     }
 
-   
-    
-  
-   
-    
-    // fine provaaaa
     /**
      * Update record
      * @param table         tabella in cui aggiornare i dati
@@ -309,11 +302,12 @@ public class Database {
         for (String attr : attrTemp) {
             attrDefinition.put("name", attr);
             attrDefinition.put("nomeAlbero", albero.getNome());
-            Database.insertRecord("AttrDef", attrDefinition);
+            attrDefinition.put("id_albero", idAlbero);
+            Database.insertRecord("attr_def", attrDefinition);
             //passo 3 : prendo id degli attributi appena inseriti
             
             
-            ResultSet rs2 = selectRecord("AttrDef", "nomeAlbero='" + albero.getNome() + "'");
+            ResultSet rs2 = selectRecord("attr_def", "nomeAlbero='" + albero.getNome() + "'");
             while(rs2.next()) {    
                 attrDef.put(attr, rs2.getInt("attrDefUid"));
             }
@@ -358,7 +352,7 @@ public class Database {
                 vertexAttrUsage.put("objectVid", vertexId);
                 vertexAttrUsage.put("attrDefId", attrDefId);
                 vertexAttrUsage.put("value", vertex.get(key));
-                Database.insertRecord("VertexAttrUsage", vertexAttrUsage);
+                Database.insertRecord("vertex_attr_usage", vertexAttrUsage);
             }
          }
          //passo 6: inserimento valori attributi arco
@@ -373,18 +367,14 @@ public class Database {
                edgeAttrUsage.put("objectEdgeUid", edgeId);
                edgeAttrUsage.put("attrDefUid", attrDefId);
                edgeAttrUsage.put("value", edge.get(key));
-               Database.insertRecord("EdgeAttrUsage", edgeAttrUsage);  
+               Database.insertRecord("edge_attr_usage", edgeAttrUsage);  
              }
             
          }
-        
-         
+
          
         }
-        
-        
-        
-         
+       
          return true;
      }
      

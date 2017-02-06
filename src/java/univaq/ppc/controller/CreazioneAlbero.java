@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Servlet Start (HomePage)- chiamata in GET controlla 
+ * per prima cosa se sono presenti nel DB alberi precedentemente inseriti. In caso di 
+ * esito positivo l'utente può:
+ * 1) effettuare il calcolo utilizzando la form presente 
+ * 2) cliccare sul button di creazione nuovo albero
+ * 3) cliccare sul button di eliminazione albero
+ * 
+ *
  */
 package univaq.ppc.controller;
 

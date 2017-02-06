@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Servlet che si occupa di eseguire il calcolo su un albero; 
+ * chiamata in GET esegue prima un check sui dati
+ * inseriti dall'utente e poi chiama il metodo vero e proprio che esegue il calcolo sull'albero
+ *
  */
 package univaq.ppc.controller;
 
@@ -24,6 +25,7 @@ import univaq.ppc.model.Result;
 import univaq.ppc.model.Vertice;
 import univaq.ppc.utility.Database;
 import univaq.ppc.utility.TemplateManager;
+import univaq.ppc.utility.Utility;
 
 /**
  *
@@ -77,7 +79,7 @@ public class EsecuzioneCalcolo extends HttpServlet {
         }
         System.out.println("");
         //prendo prima  gli attributi dei vertici
-        ResultSet rs4 = Database.selectJoinDet("vertice", "VertexAttrUsage", "vertice.vertexUid = VertexAttrUsage.objectVid", "AttrDef", "VertexAttrUsage.attrDefId = AttrDef.attrDefUid","vertice.id_albero='" + id_albero + "'");
+        ResultSet rs4 = Database.selectJoinDet("vertice", "vertex_attr_usage", "vertice.vertexUid = vertex_attr_usage.objectVid", "attr_def", "vertex_attr_usage.attrDefId = attr_def.attrDefUid","vertice.id_albero='" + id_albero + "'");
         count = 0;
         while(rs4.next()) {
             if(count == selectedTree.getNumNodi()) count--; //evita errore import db
@@ -86,7 +88,7 @@ public class EsecuzioneCalcolo extends HttpServlet {
             count++;   
         }
         //prendo attributi archi
-        ResultSet rs5 = Database.selectJoinDet("arco", "EdgeAttrUsage", "arco.edgeUid= EdgeAttrUsage.objectEdgeUid", "AttrDef", "EdgeAttrUsage.attrDefUid = AttrDef.attrDefUid","arco.id_albero='" + id_albero + "'");
+        ResultSet rs5 = Database.selectJoinDet("arco", "edge_attr_usage", "arco.edgeUid= edge_attr_usage.objectEdgeUid", "attr_def", "edge_attr_usage.attrDefUid = attr_def.attrDefUid","arco.id_albero='" + id_albero + "'");
         count = 0;
         while(rs5.next()) {
           if(count == selectedTree.getNumNodi()) count--; //evita errore import db
@@ -99,10 +101,10 @@ public class EsecuzioneCalcolo extends HttpServlet {
            int startV = Integer.parseInt(request.getParameter("vertice_start"));
            int endV = Integer.parseInt(request.getParameter("vertice_end")); 
            if(!(startV >= 0 && startV < endV && startV < selectedTree.getNumNodi())) {
-               sendErrorMessage(" ERRORE(StartVertex) : Parametri inseriti non corretti. Riprova!", response, "creazioneAlbero");
+               Utility.sendAlertMessage(" ERRORE(StartVertex) : Parametri inseriti non corretti. Riprova!", response, "creazioneAlbero");
            } 
            if(!(endV > 0 && endV > startV && endV <= selectedTree.getNumNodi())) {
-               sendErrorMessage(" ERRORE(EndVertex) : Parametri inseriti non corretti. Riprova!", response, "creazioneAlbero");
+               Utility.sendAlertMessage(" ERRORE(EndVertex) : Parametri inseriti non corretti. Riprova!", response, "creazioneAlbero");
            }
            //calcolo tempo 
            long inizio = System.nanoTime();
@@ -334,14 +336,6 @@ public class EsecuzioneCalcolo extends HttpServlet {
      
     }
     
-    protected void sendErrorMessage (String error, HttpServletResponse response, String location) throws IOException {
-        PrintWriter out = response.getWriter();
-        out.println("<script type=\"text/javascript\">");
-        out.println("alert('ERRORE!"+ error + "');");
-        out.println("window.location = '"+ location+ "';");
-        out.println("</script>");
-    }
-    
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -380,10 +374,7 @@ public class EsecuzioneCalcolo extends HttpServlet {
             if (!request.getParameter("vertice_start").equals("") && !request.getParameter("vertice_end").equals("")){
                 processRequest(request, response);
             } else {
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('ERRORE! Inserire Vertice Start e/o Vertice End');");
-                out.println("window.location = 'creazioneAlbero';");
-                out.println("</script>");
+                Utility.sendAlertMessage("ERRORE! Inserire Vertice Start e/o Vertice End", response, "creazioneAlbero");
             }
         } catch (SQLException ex) {
             Logger.getLogger(EsecuzioneCalcolo.class.getName()).log(Level.SEVERE, null, ex);
