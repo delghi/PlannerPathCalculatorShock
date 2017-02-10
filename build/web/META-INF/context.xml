@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/PPC">
-       <Resource 
+    <Resource 
         name="plannerpath" 
         type="javax.sql.DataSource" 
         driverClassName="com.mysql.jdbc.Driver" 
@@ -9,6 +9,16 @@
         password="root" 
         maxTotal="30" 
         maxIdle="5" 
-        maxWaitMillis="10000" 
+        maxWaitMillis="10000"
     />
 </Context>
+<!--     <Resource 
+        name="demo256" 
+        type="javax.sql.DataSource" 
+        driverClassName="com.mysql.jdbc.Driver" 
+        url="jdbc:mysql://95.110.171.18/demo256" 
+        username="demo256"
+        password="demo8229" 
+        maxTotal="30" 
+        maxIdle="5" 
+        maxWaitMillis="10000" -->

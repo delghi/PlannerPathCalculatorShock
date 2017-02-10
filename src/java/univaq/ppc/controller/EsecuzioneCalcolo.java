@@ -52,6 +52,7 @@ public class EsecuzioneCalcolo extends HttpServlet {
         Map data = new HashMap(); //serve per freeMarker (template)
         PrintWriter out = response.getWriter(); //test send alert
         String nomeAlbero = request.getParameter("nomeA");
+        System.out.println("Eseguo select albero");
         ResultSet rs = Database.selectRecord("albero", "nome='" + nomeAlbero + "'");
         int splitSize = 0, depth = 0, id_albero = 0;
   
@@ -62,40 +63,61 @@ public class EsecuzioneCalcolo extends HttpServlet {
         }
         selectedTree = new Albero(nomeAlbero, splitSize, depth);
         //prendo i vertici dal db
-        ResultSet rs2 = Database.selectRecord("vertice", "id_albero='" + id_albero + "'");
-        int count = 0;
-        while(rs2.next()) {
-            //selectedTree.addVertice(new Vertice(rs2.getInt("vertexUid")-1), count);
-            selectedTree.addVertice(new Vertice(count, count),count);
-            count++;
-        }
-        //prendo archi
-        ResultSet rs3 = Database.selectRecord("arco", "id_albero='" + id_albero + "'");
-        count = 0;
-        while(rs3.next()) {
-            Vertice temp = selectedTree.getVertice(count);
-            temp.setPesoArco(rs3.getInt("edgeUid")); 
-            count++;
-        }
-        System.out.println("");
-        //prendo prima  gli attributi dei vertici
-        ResultSet rs4 = Database.selectJoinDet("vertice", "vertex_attr_usage", "vertice.vertexUid = vertex_attr_usage.objectVid", "attr_def", "vertex_attr_usage.attrDefId = attr_def.attrDefUid","vertice.id_albero='" + id_albero + "'");
-        count = 0;
+        List<String> attributiV = new ArrayList<String>();
+        List<String> attributiE = new ArrayList<String>();
+        System.out.println("Prendo attributi vert");
+        ResultSet rs4 = Database.selectJoin("vertex_attr_usage", "attr_def", "vertex_attr_usage.attrDefId=attr_def.attrDefUid", "attr_def.nomeAlbero='" + nomeAlbero + "' LIMIT 1");
         while(rs4.next()) {
-            if(count == selectedTree.getNumNodi()) count--; //evita errore import db
-            Vertice temp = selectedTree.getVertice(count);
-            temp.addSingleAttr(rs4.getString("name"), rs4.getInt("value"));
-            count++;   
+            attributiV.add("name");
+            break;
         }
-        //prendo attributi archi
-        ResultSet rs5 = Database.selectJoinDet("arco", "edge_attr_usage", "arco.edgeUid= edge_attr_usage.objectEdgeUid", "attr_def", "edge_attr_usage.attrDefUid = attr_def.attrDefUid","arco.id_albero='" + id_albero + "'");
-        count = 0;
+        System.out.println("Prendo attributi edge");
+         ResultSet rs5 = Database.selectJoin("edge_attr_usage", "attr_def", "edge_attr_usage.attrDefUid=attr_def.attrDefUid", "attr_def.nomeAlbero='" + nomeAlbero + "' LIMIT 1");
         while(rs5.next()) {
-          if(count == selectedTree.getNumNodi()) count--; //evita errore import db
-          Vertice temp = selectedTree.getVertice(count);
-          temp.getArcoEntrante().setAttributiEdge(rs5.getString("name"), rs5.getInt("value"));
-          count++;
+            attributiE.add(rs5.getString("name"));
+            break;
         }
+        
+        selectedTree.creaAlbero(attributiV, attributiE);
+        
+
+
+//        ResultSet rs2 = Database.selectRecord("vertice", "id_albero='" + id_albero + "'");
+//        
+//        int count = 0;
+//        while(rs2.next()) {
+//            //selectedTree.addVertice(new Vertice(rs2.getInt("vertexUid")-1), count);
+//            selectedTree.addVertice(new Vertice(count, count),count);
+//            count++;
+//        }
+//         System.out.println("VERTICI PRESI");
+//        //prendo archi
+//        ResultSet rs3 = Database.selectRecord("arco", "id_albero='" + id_albero + "'");
+//        count = 0;
+//        while(rs3.next()) {
+//            Vertice temp = selectedTree.getVertice(count);
+//            temp.setPesoArco(rs3.getInt("edgeUid")); 
+//            count++;
+//        }
+//        System.out.println("");
+//        //prendo prima  gli attributi dei vertici
+//        ResultSet rs4 = Database.selectJoinDet("vertice", "vertex_attr_usage", "vertice.vertexUid = vertex_attr_usage.objectVid", "attr_def", "vertex_attr_usage.attrDefId = attr_def.attrDefUid","vertice.id_albero='" + id_albero + "'");
+//        count = 0;
+//        while(rs4.next()) {
+//            if(count == selectedTree.getNumNodi()) count--; //evita errore import db
+//            Vertice temp = selectedTree.getVertice(count);
+//            temp.addSingleAttr(rs4.getString("name"), rs4.getInt("value"));
+//            count++;   
+//        }
+//        //prendo attributi archi
+//        ResultSet rs5 = Database.selectJoinDet("arco", "edge_attr_usage", "arco.edgeUid= edge_attr_usage.objectEdgeUid", "attr_def", "edge_attr_usage.attrDefUid = attr_def.attrDefUid","arco.id_albero='" + id_albero + "'");
+//        count = 0;
+//        while(rs5.next()) {
+//          if(count == selectedTree.getNumNodi()) count--; //evita errore import db
+//          Vertice temp = selectedTree.getVertice(count);
+//          temp.getArcoEntrante().setAttributiEdge(rs5.getString("name"), rs5.getInt("value"));
+//          count++;
+//        }
             System.out.println("---ALBERO RISCOSTRUITO----");
             //validazione parametri inseriti da utent
            int startV = Integer.parseInt(request.getParameter("vertice_start"));
@@ -108,7 +130,9 @@ public class EsecuzioneCalcolo extends HttpServlet {
            }
            //calcolo tempo 
            long inizio = System.nanoTime();
-           Result risultato = eseguiCalcolo(selectedTree, selectedTree.getVertice(startV).getNome(), selectedTree.getVertice(endV).getNome());
+           Result risultato = eseguiCalcolo(selectedTree, selectedTree.getVertice(startV).getindice(), selectedTree.getVertice(endV).getindice());
+           //Result risultato = eseguiCalcolo(selectedTree, selectedTree.getVertice(startV).getNome(), selectedTree.getVertice(endV).getNome());
+           
            long tempoTrascorso = System.nanoTime() - inizio;
            
            List attraversati = risultato.getVerticiAttraversati();
@@ -120,10 +144,10 @@ public class EsecuzioneCalcolo extends HttpServlet {
     
     }
 
-    protected Result eseguiCalcolo (Albero albero, String start, String end) {
+    protected Result eseguiCalcolo (Albero albero, int start, int end) {
         Map<String, Integer> attributiV = new HashMap();
         Map<String, Integer> attributiA = new HashMap();
-        Map<List,Map<String, Integer>> r = new HashMap();
+       // Map<List,Map<String, Integer>> r = new HashMap();
         //contatori vertici e archi
         int resultV = 0, resultE = 0;
         int i; //conterrà indice vertice 
@@ -132,14 +156,16 @@ public class EsecuzioneCalcolo extends HttpServlet {
         Map <String, Integer> risultato = new HashMap();
         //test
         List vertici_attraversati = new ArrayList();
+        Vertice[] tree = albero.getAlbero();
         //end-test
         //Passo 1 : controllo se il vertice start è il root dell'albero
-        if(albero.getVertice(0).getNome().equals(start)) {
+        if(albero.getVertice(0).getindice() == start) {
             //variabile che uso per scorrere l'albero
             int treeSize = albero.getSize();
             
             //ciclo for scorre lista di vertici fin quando non trova indice dell'endVertex (i)
-            for( i = 0; albero.getVertice(i).getNome() != end; i++) {}
+            //for( i = 0; !tree[i].getNome().equals(end); i++) {}
+            i = end;
              //test
              vertici_attraversati.add(albero.getVertice(i).getNome());
              //end-test
@@ -167,7 +193,7 @@ public class EsecuzioneCalcolo extends HttpServlet {
                 }
              
              //scorro albero finchè non trovo vertice start
-             while(albero.getVertice(i).getNome() != start) {
+             while(tree[i].getindice() != start) {
                  //test
                  //end-test
                  //trovo il padre del vertice in esame
@@ -260,8 +286,8 @@ public class EsecuzioneCalcolo extends HttpServlet {
              
         } else {
             //cerco vertice endVertex
-            for(i = 0; albero.getVertice(i).getNome() != end; i++) {}
-            
+           // for(i = 0; albero.getVertice(i).getNome() != end; i++) {}
+            i = end;
             //calcolo sugli attributi del vertice in esame
             attributiV = albero.getVertice(i).getAttributiVert();
             vertici_attraversati.add(albero.getVertice(i).getNome());
@@ -289,7 +315,7 @@ public class EsecuzioneCalcolo extends HttpServlet {
              //calcolo per trovare il padre del vertex in esame
              i = ((i -1)/albero.getSplitSize());
              //scorro l'albero fino a quando non trovo startVertex
-             while (albero.getVertice(i).getNome() != start){
+             while (tree[i].getindice() != start){
                  //risalgo al padre del vertice attuale e calcolo 
                   attributiV = albero.getVertice(i).getAttributiVert();
                   vertici_attraversati.add(albero.getVertice(i).getNome());

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.SingleThreadModel;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ import univaq.ppc.utility.Utility;
  *
  * @author Luca
  */
-public class EliminazioneAlbero extends HttpServlet {
+public class EliminazioneAlbero extends HttpServlet{
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +39,7 @@ public class EliminazioneAlbero extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        
+         
         String nome_albero = request.getParameter("nome_albero");
         if(Database.deleteRecord("albero", "nome='" + nome_albero + "'")) {
             Utility.sendAlertMessage("Eliminazione effettuata correttamente!", response, "eliminazioneAlbero");

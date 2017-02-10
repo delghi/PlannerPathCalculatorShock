@@ -5,16 +5,18 @@
  */
 package univaq.ppc.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author Luca
  */
-public class Vertice {
+public class Vertice implements  Serializable{
     String nome;                    //nome
     int indice;                     //indice
     int valore;                     //valore
@@ -23,7 +25,8 @@ public class Vertice {
     int attr1Int;
     Random random = new Random();
     Map attributiVert = new HashMap();
-  
+    int id = 0;
+    private static AtomicInteger next_id = new AtomicInteger(0);
     
     public Vertice(int indice, int valore) {
         this.indice = indice;
@@ -31,12 +34,12 @@ public class Vertice {
         this.nome = "Nome"+ this.indice;
         this.attr1Int = random.nextInt(98);
         this.arcoEntrante.attr2Int = random.nextInt(50);
-        
+        this.id = next_id.incrementAndGet();
     }
     
     public Vertice(int indice) {
         this.indice = indice;
-        
+        this.id = next_id.incrementAndGet();
         this.nome = "Nome"+ this.indice;
         this.attr1Int = random.nextInt(98);
         this.arcoEntrante.attr2Int = random.nextInt(50);
@@ -54,10 +57,14 @@ public class Vertice {
         return nome;
     }
 
-    public int getIndice() {
-        return indice;
+    public int getId() {
+        return this.id ;
     }
 
+    public void setIndice(int id) {
+        this.indice = id;
+    }
+    
     public int getValore() {
         return valore;
     }
@@ -102,6 +109,11 @@ public class Vertice {
 
     public Arco getArcoEntrante() {
         return arcoEntrante;
+    }
+
+    @Override
+    public String toString() {
+        return "Vertice{" + "nome=" + nome + ", indice=" + indice + ", valore=" + valore + ", attributi=" + attributi + ", arcoEntrante=" + arcoEntrante + ", attr1Int=" + attr1Int + ", random=" + random + ", attributiVert=" + attributiVert + '}';
     }
     
     

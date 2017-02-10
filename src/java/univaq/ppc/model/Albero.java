@@ -5,6 +5,7 @@
  */
 package univaq.ppc.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Random;
  *
  * @author Luca
  */
-public class Albero {
+public class Albero implements Serializable{
     
     String nome;
     int splitSize; //archi entranti
@@ -24,10 +25,11 @@ public class Albero {
     int numNodi;
     //test
     List attributi = new ArrayList();
-    int id;
+    int id = 0;
     
 
     public Albero(String nome, int splitSize, int depth, List attrTemp) {
+        this.id = id+1;
         this.nome = nome;
         this.splitSize = splitSize;
         this.depth = depth;
@@ -69,6 +71,10 @@ public class Albero {
 
     public int getSize() {
         return this.numNodi;
+    }
+    
+    public int getId() {
+        return  this.id;
     }
 
     public String getNome() {
@@ -136,9 +142,10 @@ public class Albero {
         for (int i = 0; i < size; i++) {
             int num1 = random.nextInt(100); //valore random da assegnare ai vertici
             int num2 = random.nextInt(70); // valore random da assegnare agli archi
-            
+            //System.out.println(i);
             this.albero[i] = new Vertice(i, num1);
             this.albero[i].addAttr(attributiV, attributiE);
+            this.albero[i].setIndice(i);
             
             if (i == 0) {
                 this.albero[i].setPesoArco(0);  // assegna peso 0 se si tratta di vertice padre
@@ -147,6 +154,13 @@ public class Albero {
             }
         }
         
+    }
+
+    
+    
+    @Override
+    public String toString() {
+        return "Albero{" + "nome=" + nome + ", splitSize=" + splitSize + ", depth=" + depth + ", albero=" + albero + ", numNodi=" + numNodi + ", attributi=" + attributi + ", id=" + id + '}';
     }
     
     

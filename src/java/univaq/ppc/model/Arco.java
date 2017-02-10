@@ -5,8 +5,10 @@
  */
 package univaq.ppc.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 
@@ -14,13 +16,14 @@ import java.util.Map;
  *
  * @author Luca
  */
-public class Arco {
+public class Arco implements Serializable{
 
-    
+    int id = 0;
     int valore;
     int attr2Int; //prova
     String[] attr; //lista attributi archi
     Map attributiEdge = new HashMap();
+    private static AtomicInteger next_id = new AtomicInteger(0);
 
     public Arco(int valore, String[] attr) {
         this.valore = valore;
@@ -31,8 +34,17 @@ public class Arco {
     }
 
     public Arco() {
+        this.id = next_id.incrementAndGet();
     }
 
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getPeso() {
         return valore;
     }
@@ -51,6 +63,11 @@ public class Arco {
     
     public void setAttributiEdge(String name, int value) {
         this.attributiEdge.put(name, value);
+    }
+
+    @Override
+    public String toString() {
+        return "Arco{" + "valore=" + valore + ", attr2Int=" + attr2Int + ", attr=" + attr + ", attributiEdge=" + attributiEdge + '}';
     }
     
     
